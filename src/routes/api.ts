@@ -1,7 +1,18 @@
 import { Router } from 'express';
 import { register, login } from '../controllers/authController';
-import { getTodos, createTodo } from '../controllers/todoController';
-import { validateRegister, validateLogin, validateTodo } from '../middlewares/validator';
+import { 
+  getTodos, 
+  getTodoById, 
+  createTodo, 
+  updateTodo, 
+  deleteTodo 
+} from '../controllers/todoController';
+import { 
+  validateRegister, 
+  validateLogin, 
+  validateTodo, 
+  validateUpdateTodo 
+} from '../middlewares/validator';
 import { verifyToken } from '../middlewares/authMiddleware';
 
 const router = Router();
@@ -12,6 +23,9 @@ router.post('/auth/login', validateLogin, login);
 
 // TODO ROUTES (Protected)
 router.get('/todos', verifyToken, getTodos);
+router.get('/todos/:id', verifyToken, getTodoById);
 router.post('/todos', verifyToken, validateTodo, createTodo);
+router.put('/todos/:id', verifyToken, validateUpdateTodo, updateTodo);
+router.delete('/todos/:id', verifyToken, deleteTodo);
 
 export default router;
